@@ -1,0 +1,375 @@
+lab 1   excute ddl command
+
+a   create table student(regno number(5), name varchar(10),dob date,marks number(3));
+
+b   alter table student drop column marks;
+
+c   alter table student modify regno varchar2(5);
+
+d   alter table student add phno number(10);
+
+e   insert into student values('100','abhishek','01-Jan-2000',99999);
+    insert into student values('101','ramya','01-Jan-2000',88888);
+    insert into student values('102','kishor','01-Jan-2000',77777);
+    insert into student values('103','raju','01-Jan-2000',66666);
+    insert into student values('104','ramu','01-Jan-2000',555555);
+
+f    select * from student;    
+
+
+
+lab 2   execute dml commands
+
+a  create table library(bid number(3)primary key,title varchar2(10),author varchar2(10),publisher varchar2(10),yearofpub number(4),price number(3));
+
+b  insert into library values(100,'c-prog','ramesh','skyward',2005,250);
+   insert into library values(101,'c++','raghav','himalaya',2007,350);
+   insert into library values(102,'data-str','balraj','skyward',2005,250);
+   insert into library values(103,'c-prog','srikanth','skyward',2005,250);
+   insert into library values(104,'c++','raghav','hamalaya',2007,350);
+   insert into library values(105,'dbms','manjunath','banglore',2010,425);
+
+c  select * from library;
+
+
+d  select distinct publisher from library;
+
+
+e  update library set price =( price+price /20);
+
+
+f  delete from library where author='raghav';
+
+g  select * from library order by title asc;
+
+h  select * from library where price between 100 and 300;
+
+
+
+
+lab 3    execute tcl command
+
+a  create table employee(empno number(3) primary key,empname varchar2(10),dept varchar2(10), salary number(5),doj date,branch varchar2(10));
+
+b  insert into employee values(100,'rajesh','sales',25000,'01-jan-2000','tumkur');
+   insert into employee values(101,'abhinav','marketing',22000,'07-jan-2000','mysore');
+   insert into employee values(102,'asha','sales',23000,'09-mar-2021','tumkur');
+   insert into employee values(103,'kaushik','accounts',25000,'14-apr-2022','mandya');
+   insert into employee values(104,'rajesh','sales',32000,'06-feb-2021','tumkur');
+   insert into employee values(105,'kumar','sales',27000,'12-jan-2021','banglore');
+   insert into employee values(106,'asha','accounts',24000,'15-oct-2022','tumkur');
+   insert into employee values(107,'rajesh','marketing',22500,'16-dec-2022','banglore');
+
+c  select avg(salary) from employee;
+
+d  select count (*) from employee;
+
+e  select dept,count(*) from employee group by dept;
+
+f  select empname,sum(salary),count(*) from employee group by empname;
+
+g  select * from employee where salary >=25000;
+
+h  commit;
+   
+   insert into employee values(108,'ramu','sales',26000,'10-may-2022','tumkur');
+   
+   roll back;
+
+   select * from employee;
+
+
+
+
+
+
+lab 4  nested quary
+   
+a   create table items(itemcode number(5) primary key,name varchar2(10),price number(3));
+
+    create table purchase(itemcode number(5) references items,qty number(5));
+
+b   insert into items values(100,'soap',30);
+    insert into items values(101,'rice',50);
+    insert into items values(102,'paste',25);
+    insert into items values(103,'sugar',40);
+    insert into items values(104,'salt',20);
+    insert into items values(105,'oil',100);
+
+
+    insert into purchase values(100,10);
+    insert into purchase values(102,5);
+    insert into purchase values(104,5);
+    insert into purchase values(105,3);
+
+c   select * from items where itemcode in(select itemcode from purchase);
+
+
+d   select * from items where itemcode not in(select itemcode from purchase);
+
+
+
+
+
+
+
+lab 5    join operation in sql
+
+  create table department(dno number(3) primary key,dname varchar2(10),mgrid number(3),mgrjoindate date);
+
+  create table employee(empid number(5),ename varchar2(10),address varchar2(10),gender varchar2(10),salary number(5),dno number(3) references department);
+
+
+
+  insert into department values(100,'research',500,'01-jan-2000');
+  insert into department values(101,'technical',501,'01-feb-2000');
+  insert into department values(102,'testing',502,'01-mar-2000');
+  insert into department values(103,'coding',503,'01-apr-2000');
+
+
+  insert into employee values(600,'abhishek','tumkur','male',20000,100);
+  insert into employee values(601,'manasa','banglore','female',23000,101);
+  insert into employee values(602,'chandana','tumkur','female',28000,102);
+  insert into employee values(603,'mohan','banglore','male',35000,103);
+  insert into employee values(604,'sanvi','tumkur','female',29000,101);
+  insert into employee values(605,'rajeshwari','tumkur','female',30000,100);
+  insert into employee values(606,'vidya','banglore','female',20000,102);
+  insert into employee values(607,'vikram','mysore','male',23000,102);
+
+
+a  update employee set salary=salary+(salary/10) where dno=100;
+
+b  select ename from employee e where exists(select d.dno from department d where d.dno=100 and e.dno=100);
+   
+c  select ename,dname from employee e natural join department d;
+
+d  select * from employee e, department d where e.dno=d.dno;
+
+e  select * from employee e,department d where e.dno!=d.dno;
+
+f  select * from employee e full outer join department d on e.dno=d.dno;
+
+
+
+lab 6   create view
+
+create table train(trainno varchar2(5),name varchar2(10),startplace varchar(10),destination varchar2(10));
+
+create table availability(trainno varchar(20),class varchar(20),startplace varchar(20),destination varchar(20),no_of_seats varchar(20));
+
+a. create view sleeper as select trainno,startplace,destination from train;
+
+insert into sleeper values('RJD16','banglore','hubli');
+insert into sleeper values('RJD17','banglore','dharwad');
+insert into sleeper values('RJD18','banglore','mysore');
+insert into sleeper values('KKE55','banglore','udupi');
+insert into sleeper values('KKE56','banglore','belgaum');
+
+1. insert into sleeper values('KKE57','banglore','tumkur');
+
+2. update sleeper set destination='manglore' where trainno='RJD16';
+
+3. delete from sleeper where trainno='KKE55';
+
+
+b. create view details as select a.trainno,t.name,a.class from train t join availability a on t.trainno=a.trainno;
+
+c. create view totalseats as select trainno,startplace,count(no_of_seats)as seats from availability group by startplace,trainno;
+
+insert into availability values('KKE55','sleeper','tumkur','banglore',1);
+insert into availability values('JNS8','sleeper','tumkur','manglore',1);
+insert into availability values('KKE55','sleeper','tumkur','banglore',1);
+
+
+1. insert into availability values('RJD16','sleeper','tumkur','banglore',1);
+
+2. update availability set startplace='hubli' where trainno='JNS8';
+
+3. delete from availability where trainno='KKE55';
+
+
+d. Rename sleeper to sleeperclass;
+
+e. drop view details;
+
+
+
+
+
+
+
+lab 7   factorial
+
+  
+set serveroutput on
+
+create or replace function f(n number) return number is
+   begin
+     if n=0 or n=1 then
+         return 1;
+     else
+        return n*f(n-1);
+     end if;
+     exception
+      when others then
+      return null;
+     
+     end f;
+/
+
+
+
+declare 
+   num number:=5;
+   result number;
+
+begin
+   
+   result:=f(num);
+  
+   dbms_output.put_line('factorial='||num||'is'||result);
+end;
+/
+
+
+
+
+lab 8    5 highiest paid employee
+
+create table employee(empno number(5), name varchar2(10), salary number(10));
+
+insert into employee values(100, 'aaa', 20000); 
+insert into employee values(101, 'bbb', 21000);
+insert into employee values(102,'ccc',22000);
+insert into employee values(103, 'ddd',23000); 
+insert into employee values(104,'eee', 24000);
+insert into employee values(105, 'fff', 25000); 
+insert into employee values(106, 'ggg', 26000);
+
+declare
+cursor emp is select name, salary from employee order by salary desc;
+begin
+for i in emp
+loop
+if emp% rowcount<=5 then
+dbms_output.put_line(i.name||' '||i.salary);
+end if;
+end loop;
+end;
+/
+
+
+
+
+lab 9   coustemer id
+
+set serveroutput on
+
+create table customer(cid number(3),cname varchar2(10),address varchar2(10));
+
+
+insert into customer values(100,'rajesh','tumkur');
+insert into customer values(101,'akshay','mysore');
+insert into customer values(102,'komal','banglore');
+insert into customer values(103,'roshan','manglore');
+insert into customer values(104,'swathi','gubbi');
+insert into customer values(105,'kumar','tumkur');
+
+
+Declare
+  c_id customer.cid%type:=0;
+  c_name customer.cname%type;
+  c_address customer.address%type;
+
+  Begin 
+     c_id:=&c_id;
+     select cname,address into c_name,c_address from customer where cid=c_id;
+
+    dbms_output.put_line('name:'||c_name);
+    dbms_output.put_line('address'||c_address);
+
+  Exception 
+      when no_data_found then
+      dbms_output.put_line('Invalid customer ID');
+      End;
+/
+    
+  
+
+lab 10   movie
+
+set serveroutput on
+
+create table movie(mid number(3),mtitle varchar2(10),language varchar2(10));
+
+insert into movie values (100, 'aaa', 'kannada');
+insert into movie values(101, 'bbb', 'english');
+insert into movie values(102,'ccc', 'hindi');
+insert into movie values(103, 'ddd', 'telgu'); 
+insert into movie values(104, 'eee', 'tamil');
+insert into movie values(105,'fff', 'marati');
+insert into movie values(106, 'ggg', 'bengali');
+
+create or replace function total_movies return number is total number:=0;
+begin
+select count(*) into total from movie;
+return total;
+end;
+/
+
+declare
+n number;
+begin
+n:=total_movies;
+dbms_output.put_line('no of movies ='||n);
+end;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
